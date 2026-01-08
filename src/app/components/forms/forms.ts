@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Location } from "../../types/location.interface"
 import { GetUnits } from '../../services/get-units';
 
 @Component({
@@ -13,21 +14,30 @@ import { GetUnits } from '../../services/get-units';
   styleUrl: './forms.scss',
 })
 export class Forms implements OnInit {
-  results = [];
+  results: Location[] = [];
+  filteredResults: Location[] = []
   form!: FormGroup;
 
   constructor(private formBuilder: FormBuilder, private unitService: GetUnits){}
 
   ngOnInit(): void {
-    this.unitService.getAllUnits().subscribe(data => console.log(data));
+    this.unitService.getAllUnits().subscribe(data => {
+      this.results = data.locations;
+      this.filteredResults = data.locations;
+    });
     this.form = this.formBuilder.group({
       hour: '',
-      showClosed: false,
+      showClosed: true,
     })
   }
 
   onSubmit(): void {
-    console.log('Formulário enviado!', this.form.value);
+    if(!this.form.value.showClosed) {
+      this.filteredResults = this.results.filter(location => location.opened === true);
+    } else {
+      this.filteredResults = this.results;
+    }
+    
   }
 
   onClean(): void {

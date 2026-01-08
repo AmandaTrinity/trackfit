@@ -15,3 +15,5 @@ export class GetUnits {
     return this.httpClient.get<UnitResponse>(this.apiUrl)
   }
 }
+
+//O filtro vai ficar para o lado do cliente(frontend), isso não é boa prática e caso sejam muitos resultados, podem acabar travando, normalmente isso é responsabilidade do back end
