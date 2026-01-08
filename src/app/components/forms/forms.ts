@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { GetUnits } from '../../services/get-units';
 
 @Component({
   selector: 'app-forms',
@@ -15,9 +16,10 @@ export class Forms implements OnInit {
   results = [];
   form!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder){}
+  constructor(private formBuilder: FormBuilder, private unitService: GetUnits){}
 
   ngOnInit(): void {
+    this.unitService.getAllUnits().subscribe(data => console.log(data));
     this.form = this.formBuilder.group({
       hour: '',
       showClosed: false,
